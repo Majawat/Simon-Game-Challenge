@@ -3,16 +3,21 @@ var gamePattern= [];
 var userClickedPattern = [];
 var level = 0
 
+if(localStorage.getItem("HighScore")==null){
+    localStorage.setItem("HighScore",0);
+    highScore = 0;
+}else{
+    var highScore = localStorage.getItem("HighScore");
+}
+
 //--Start Game--\\
-
-
 $(document).keydown(startGame);
-
 $(".startButton").click(startGame);
 
 function startGame(){
         $(".startButton").css("visibility","hidden");
-        $("h2").css("visibility","hidden");
+        $("h2").text("High Score: "+highScore);
+
         if(level===0){
             $("h1").text("Level "+level);
             nextSequence();
@@ -49,11 +54,11 @@ function nextSequence(){
 
     //IDEA: Play back full sequence, maybe an option?
     disableButtons();
-    playSound(randomChosenColor);
-    animatePress(randomChosenColor);
+        playSound(randomChosenColor);
+        animatePress(randomChosenColor);
     enableButtons();
 
-
+    $("h2").text("High Score: "+highScore);
     level++;
     $("h1").text("Level "+level);
 }
@@ -61,6 +66,7 @@ function nextSequence(){
 //Check answer
 function checkAnswer(currentLevel){
     console.log("game:"+ gamePattern+"\nuser:"+userClickedPattern);
+    $("h2").text("High Score: "+highScore);
     if(gamePattern[currentLevel]===userClickedPattern[currentLevel]){
         //rightAnswer
         console.log("right");
@@ -69,6 +75,10 @@ function checkAnswer(currentLevel){
                 nextSequence();
                 userClickedPattern = [];
             },1000);
+            if(level>highScore){
+                localStorage.setItem("HighScore",level);
+                highScore=level;
+            }
         }
     }else{
         //wrongAnswer
@@ -82,7 +92,6 @@ function checkAnswer(currentLevel){
 
         $("h1").text("Game Over, Press Any Key to Restart");
         $(".startButton").css("visibility","visible");
-        $("h2").css("visibility","visible");
         startOver();
     }
 }
@@ -91,6 +100,7 @@ function startOver(){
     level = 0
     gamePattern = [];
     userClickedPattern=[];
+    $("h2").text("High Score: "+highScore);
 }
 
 //--Visuals--\\

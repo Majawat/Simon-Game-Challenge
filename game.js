@@ -4,13 +4,20 @@ var userClickedPattern = [];
 var level = 0
 
 //--Start Game--\\
-$(document).keydown(function(){
-    if(level===0){
-        $("h1").text("Level "+level);
-        nextSequence();
-    }
-});
 
+
+$(document).keydown(startGame);
+
+$(".startButton").click(startGame);
+
+function startGame(){
+        $(".startButton").css("visibility","hidden");
+        $("h2").css("visibility","hidden");
+        if(level===0){
+            $("h1").text("Level "+level);
+            nextSequence();
+        }
+}
 
 //--Game Logic--\\
 //User actions
@@ -74,6 +81,8 @@ function checkAnswer(currentLevel){
         },200);
 
         $("h1").text("Game Over, Press Any Key to Restart");
+        $(".startButton").css("visibility","visible");
+        $("h2").css("visibility","visible");
         startOver();
     }
 }

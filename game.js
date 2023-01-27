@@ -14,16 +14,22 @@ $(document).keydown(function(){
 
 //--Game Logic--\\
 //User actions
-$(".btn").on("click",function(){
-    var userChosenColor = this.id;
+function enableButtons(){
+    $(".btn").on("click",function(){
+        var userChosenColor = this.id;
 
-    userClickedPattern.push(userChosenColor);
+        userClickedPattern.push(userChosenColor);
 
-    checkAnswer(userClickedPattern.length-1);
+        checkAnswer(userClickedPattern.length-1);
 
-    playSound(userChosenColor);
-    animatePress(userChosenColor);
-})
+        playSound(userChosenColor);
+        animatePress(userChosenColor);
+    })
+}
+
+function disableButtons(){
+    $(".btn").off("click");
+}
 
 //Create sequence
 function nextSequence(){
@@ -34,8 +40,13 @@ function nextSequence(){
 
     $("."+randomChosenColor).fadeOut().fadeIn();
 
+    //IDEA: Play back full sequence, maybe an option?
+    disableButtons();
     playSound(randomChosenColor);
     animatePress(randomChosenColor);
+    enableButtons();
+
+
     level++;
     $("h1").text("Level "+level);
 }
